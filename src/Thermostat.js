@@ -1,12 +1,17 @@
 function Thermostat() {
   this.temp = 20;
   this.minTemp = 10;
-  this.maxTemp = 25;
   this.powerSavingMode = true;
+  this.maxTemp = 25;
 };
 
 Thermostat.prototype.up = function () {
-  this.temp++
+  if(this.temp === this.maxTemp) {
+    throw new Error("Already at maximum temperature")
+  }
+  else {
+    this.temp++
+  }
 };
 
 Thermostat.prototype.down = function () {
@@ -33,5 +38,5 @@ Thermostat.prototype._setMaxTemp = function () {
 };
 
 Thermostat.prototype.resetTemp = function () {
-  this.temp = 20
+  this.temp = 20;
 };

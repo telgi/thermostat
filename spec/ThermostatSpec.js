@@ -36,6 +36,19 @@ describe('Thermostat', function() {
       thermostat.up();
       expect(thermostat.temp).toEqual(21);
     });
+
+    it('throws error if max temp has been reached on power saving mode', function() {
+      thermostat.powerSavingMode = true
+      thermostat.temp = 25
+      expect(function() {thermostat.up()}).toThrowError("Already at maximum temperature")
+    });
+
+    it('throws error if max temp has been reached not on power saving mode', function() {
+      thermostat.powerSavingMode = false
+      thermostat.temp = 32
+      thermostat.maxTemp = 32
+      expect(function() {thermostat.up()}).toThrowError("Already at maximum temperature")
+    });
   });
 
   describe('down', function() {
