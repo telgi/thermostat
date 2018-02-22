@@ -49,6 +49,10 @@ describe('Thermostat', function() {
       thermostat.maxTemp = 32
       expect(function() {thermostat.up()}).toThrowError("Already at maximum temperature")
     });
+
+    it('shows medium usage as default', function() {
+      expect(thermostat.energyUsage).toEqual('medium');
+    });
   });
 
   describe('down', function() {
@@ -82,6 +86,27 @@ describe('Thermostat', function() {
       thermostat.temp = 23;
       thermostat.resetTemp();
       expect(thermostat.temp).toEqual(20);
+    });
+  });
+
+  describe('checkEnergyUsage', function() {
+    it('updates the energy usage to low based on temperature less than 18 degrees', function() {
+      thermostat.temp = 15
+      thermostat.checkEnergyUsage();
+      expect(thermostat.energyUsage).toEqual('low')
+    });
+
+    it('updates the energy usage to high based on temperature being greater than 24', function() {
+      thermostat.temp = 25
+      thermostat.checkEnergyUsage();
+      expect(thermostat.energyUsage).toEqual('high')
+    });
+
+    it('updates the energy usage to medium based on temperature between 18 to 24', function() {
+      thermostat.energyUsage = 'high'
+      thermostat.temp = 21
+      thermostat.checkEnergyUsage();
+      expect(thermostat.energyUsage).toEqual('medium')
     });
   });
 });
