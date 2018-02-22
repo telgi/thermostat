@@ -11,6 +11,24 @@ describe('Thermostat', function() {
     expect(thermostat.temp).toEqual(20);
   });
 
+  it('has a minimum temp of 10', function() {
+    expect(thermostat.minTemp).toEqual(10)
+  });
+
+  it('has a max temp of 25 if powerSavingMode is on', function() {
+    thermostat.powerSavingMode = 'on'
+    expect(thermostat.maxTemp).toEqual(25)
+  });
+
+  it('has a max temp of 32 if powerSavingMode is off', function() {
+    thermostat.powerSavingMode = 'off'
+    expect(thermostat.maxTemp).toEqual(32)
+  });
+
+  it('has power saving mode on by default', function() {
+    expect(thermostat.powerSavingMode).toEqual('on')
+  });
+
   describe('up', function() {
     it('increases temperature by 1', function() {
       thermostat.up();
@@ -22,6 +40,19 @@ describe('Thermostat', function() {
     it('decreases temperature by 1', function() {
       thermostat.down();
       expect(thermostat.temp).toEqual(19);
+    });
+
+    it ('throws an error if min temp has been reached', function() {
+      thermostat.temp = thermostat.minTemp
+      expect(function() {thermostat.down()}).toThrowError("Already at minimum temperature");
+    })
+  });
+
+  describe('setPowerSavingMode', function() {
+    it('switches powerSavingMode between on and off', function() {
+      thermostat.powerSavingMode = 'on'
+      thermostat.setPowerSavingMode();
+      expect(thermostat.powerSavingMode).toEqual('off')
     });
   });
 });
